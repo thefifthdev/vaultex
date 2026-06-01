@@ -2,8 +2,9 @@
   "version": "0.1.0",
   "name": "@vaultex/lending-client",
   "type": "module",
-  "exports": "./dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "./src/index.ts",
+  "exports": "./src/index.ts",
+  "typings": "src/index.ts",
   "scripts": {
     "build": "tsc"
   },
