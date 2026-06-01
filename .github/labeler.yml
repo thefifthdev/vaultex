@@ -1,0 +1,24 @@
+# Auto-apply area labels by changed paths (actions/labeler@v5).
+'area: contract':
+  - changed-files:
+      - any-glob-to-any-file: ['contracts/**', 'Cargo.toml', 'Cargo.lock']
+
+'area: web':
+  - changed-files:
+      - any-glob-to-any-file: ['web/**']
+
+'area: server':
+  - changed-files:
+      - any-glob-to-any-file: ['server/**']
+
+'area: client':
+  - changed-files:
+      - any-glob-to-any-file: ['packages/**']
+
+'area: docs':
+  - changed-files:
+      - any-glob-to-any-file: ['docs/**', '**/*.md']
+
+'area: ci':
+  - changed-files:
+      - any-glob-to-any-file: ['.github/**', 'Makefile']

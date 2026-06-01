@@ -1,0 +1,17 @@
+[package]
+name = "lending-pool"
+version = "0.1.0"
+edition = "2021"
+publish = false
+license = "MIT"
+description = "Non-custodial single-market lending pool for Vaultex — deposit, borrow against collateral, repay, liquidate on Soroban."
+
+[lib]
+crate-type = ["lib", "cdylib"]
+doctest = false
+
+[dependencies]
+soroban-sdk = { workspace = true }
+
+[dev-dependencies]
+soroban-sdk = { workspace = true, features = ["testutils"] }

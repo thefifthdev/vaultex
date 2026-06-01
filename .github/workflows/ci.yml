@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract-checks:
+    name: Contract Checks
+    runs-on: ubuntu-latest
+    env:
+      WASM_SIZE_LIMIT_BYTES: 65536
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+
+      - name: Add Soroban WASM target
+        run: rustup target add wasm32v1-none
+
+      - name: Format check
+        run: cargo fmt --check
+
+      - name: Clippy
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Tests
+        run: cargo test
+
+      - name: Build WASM
+        run: cargo build --release --target wasm32v1-none -p lending-pool
+
+      - name: WASM size budget
+        run: |
+          WASM=target/wasm32v1-none/release/lending_pool.wasm
+          SIZE=$(wc -c < "$WASM")
+          echo "lending_pool.wasm = ${SIZE} bytes (limit ${WASM_SIZE_LIMIT_BYTES})"
+          echo "| Artifact | Size | Limit |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| lending_pool.wasm | ${SIZE} B | ${WASM_SIZE_LIMIT_BYTES} B |" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$SIZE" -gt "$WASM_SIZE_LIMIT_BYTES" ]; then
+            echo "::error::WASM size ${SIZE}B exceeds budget ${WASM_SIZE_LIMIT_BYTES}B"
+            exit 1
+          fi
+
+  web-checks:
+    name: Web Checks
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_CONTRACT_ID: CBAPGTVW3IUEIGUEE4JPB35GLBTBRMJS7ZBYO7H75CFSOONIPF4TGG7T
+      NEXT_PUBLIC_NETWORK: testnet
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build typed contract client
+        run: pnpm build:client
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build

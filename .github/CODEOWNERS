@@ -1,0 +1,10 @@
+# Default owner for everything in the repo.
+*                   @thefifthdev
+
+# Area owners (kept aligned with .github/labeler.yml).
+/contracts/         @thefifthdev
+/web/               @thefifthdev
+/server/            @thefifthdev
+/packages/          @thefifthdev
+/docs/              @thefifthdev
+/.github/           @thefifthdev

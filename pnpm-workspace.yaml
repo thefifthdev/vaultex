@@ -1,0 +1,5 @@
+packages:
+  - "web"
+  - "packages/*"
+# Note: contracts/ is a Rust/Soroban workspace managed by cargo (not pnpm).
+# Vaultex is pure on-chain — there is no off-chain server.

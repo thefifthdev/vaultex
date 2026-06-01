@@ -1,0 +1,27 @@
+{
+  "name": "vaultex",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Non-custodial lending and credit protocol built natively on Soroban smart contracts.",
+  "license": "MIT",
+  "packageManager": "pnpm@9.15.1",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build:client": "pnpm --filter @vaultex/lending-client build",
+    "dev:web": "pnpm --filter @vaultex/web dev",
+    "build": "pnpm --filter @vaultex/lending-client build && pnpm --filter @vaultex/web build",
+    "lint": "pnpm -r --if-present lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "test": "pnpm -r --if-present test",
+    "contract:build": "stellar contract build",
+    "contract:test": "cargo test",
+    "contract:fmt": "cargo fmt --check",
+    "contract:clippy": "cargo clippy --all-targets -- -D warnings"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2"
+  }
+}
