@@ -17,7 +17,7 @@ jobs:
     env:
       WASM_SIZE_LIMIT_BYTES: 65536
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -60,7 +60,7 @@ jobs:
       NEXT_PUBLIC_CONTRACT_ID: CBAPGTVW3IUEIGUEE4JPB35GLBTBRMJS7ZBYO7H75CFSOONIPF4TGG7T
       NEXT_PUBLIC_NETWORK: testnet
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: pnpm/action-setup@v4
 
